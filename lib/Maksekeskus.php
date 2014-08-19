@@ -217,7 +217,7 @@ class Maksekeskus
     
     private function makeApiRequest ($method, $endpoint, $auth_level = self::AUTH_LEVEL_1, $params = NULL, $body = NULL)
     {
-        $uri = $this->apiUrl.'/v1'.$endpoint;
+        $uri = $this->apiUrl . $endpoint;
         
         if (isset($params) AND count($params)) {
             $uri .= '?'.http_build_query($params);
