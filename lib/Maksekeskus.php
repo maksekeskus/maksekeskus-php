@@ -300,7 +300,7 @@ class Maksekeskus
     }
     
     
-    public function getTransactionList ($since = null, $status = null)
+    public function getTransactionList ($since = null, $status = null, $page = null, $per_page = 30)
     {
         $params = array();
         
@@ -310,6 +310,14 @@ class Maksekeskus
         
         if (isset($status)) {
             $params['status'] = is_array($status) ? join(',', $status) : $status;
+        }
+        
+        if (!empty($page)) {
+            $params['page'] = (int) $page;
+        }
+        
+        if (!empty($per_page)) {
+            $params['per_page'] = (int) $per_page;
         }
         
         return $this->makeApiRequest(Http::GET, "/transactions", self::AUTH_LEVEL_2, $params)->body;
