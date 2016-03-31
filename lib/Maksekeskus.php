@@ -483,6 +483,25 @@ class Maksekeskus
         }
     }
 
+   /**
+     * Get shop config for e-shop integration 
+     *
+     * @param string $environment json-encoded key-value pairs describing the e-shop environment
+     * @throws Exception if failed to get shop configuration
+     * @return obj Shop configuration object
+     */
+    public function getShopConfig ($environment)
+    {
+        $response = $this->makeGetRequest("/v1/shop/configuration", $environment);
+
+        if (in_array($response->code, array(200))) {
+            return $response->body;
+        } else {
+            throw new Exception('Could not get shop configuration for the environment. Response ('.$response->code.'): '.$response->raw_body);
+        }
+    }
+
+
 
     /**
      * Update shop data
