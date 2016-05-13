@@ -11,7 +11,7 @@ Use the composer to install dependencies declared in /lib/composer.json
 (https://getcomposer.org/)
 
 
-Get your API keys from [metchant.maksekeskus.ee](https://metchant.maksekeskus.ee) or [merchant-test.maksekeskus.ee](https://metchant-test.maksekeskus.ee)
+Get your API keys from [merchant.maksekeskus.ee](https://merchant.maksekeskus.ee) or [merchant-test.maksekeskus.ee](https://merchant-test.maksekeskus.ee)
 
 And off you go:
 ``` php
