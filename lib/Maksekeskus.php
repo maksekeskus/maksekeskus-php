@@ -1,5 +1,5 @@
 <?php
-
+require __DIR__ . '/vendor/autoload.php';
 use Httpful\Http;
 use Httpful\Request;
 
