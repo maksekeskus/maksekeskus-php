@@ -1,0 +1,28 @@
+
+{
+    "name": "maksekeskus/maksekeskus-php",
+    "description": "Maksekeskus PHP SDK",
+    "keywords": [
+        "maksekeskus",
+        "billing",
+        "payments",
+        "api"
+    ],
+    "homepage": "http://maksekeskus.ee",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Mihkel Karu",
+            "email": "mihkel@maksekeskus.ee"
+        }
+    ],
+    "require": {
+        "php": ">=5.3.0",
+        "nategood/httpful": "*",
+        "ext-curl": "*",
+        "ext-json": "*"
+    },
+    "autoload": {
+      "classmap": [""]
+    }
+}
