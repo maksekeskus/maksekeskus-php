@@ -19,9 +19,9 @@ And off you go:
  include_once 'lib/Maksekeskus.php';
 
 // get your API keys from metchant.maksekeskus.ee
-$shopId = '12ee0036-3719-4edb-9a8b-51f5770190ca';
-$KeyPublishable = '5wCSE2B2OAV64jtfYcpe2N1kZQzCXNTe';
-$KeySecret = 'JvH2IZ6W6fvKB7W74UGeQNS1490Kpea3BLWgqcfbhQKEN1w2UDrua3sWlojPGfhp';
+$shopId = '12ee0036-3719-...-9a8b-51f5770190ca';
+$KeyPublishable = '5wCSE2B2OAV6...cpe2N1kZQzCXNTe';
+$KeySecret = 'JvH2IZ6W6fvKB7W7...ea3BLWgqcfbhQKEN1w2UDrua3sWlojPGfhp';
 
 // use TRUE if work against the Test environment 
 // see https://makecommerce.net/en/for-developers/test-environment/
