@@ -5,18 +5,18 @@ maksekeskus-php
 See API documentation: http://docs.maksekeskus.apiary.io 
 and more on https://maksekeskus.ee/api-explorer/intro.php
 
-Place the lib under your project folder:  /lib/Maksekeskus.php
+Download the packaged library form the repository [releases]
+(https://github.com/maksekeskus/maksekeskus-php/releases/)
 
-Use the composer to install dependencies declared in /lib/composer.json 
-(https://getcomposer.org/)
-
+Unpack it into your project folder (i.e. /htdocs/myshop/ )
+and include the libarary file ( i.e. /htdocs/myshop/Maksekeskus-1.0/Maksekeskus.php )
 
 Get your API keys from [merchant.maksekeskus.ee](https://merchant.maksekeskus.ee) or [merchant-test.maksekeskus.ee](https://merchant-test.maksekeskus.ee)
 
 And off you go:
 ``` php
 <?php
- include_once 'lib/Maksekeskus.php';
+ include_once 'Maksekeskus-1.0/Maksekeskus.php';
 
 // get your API keys from metchant.maksekeskus.ee
 $shopId = '12ee0036-3719-...-9a8b-51f5770190ca';
