@@ -14,12 +14,12 @@ And off you go:
 <?php
  include_once 'Maksekeskus-1.0/Maksekeskus.php';
 
-// get your API keys from metchant.maksekeskus.ee
+// get your API keys from merchant-test.maksekeskus.ee or merchant.maksekeskus.ee
 $shopId = '12ee0036-3719-...-9a8b-51f5770190ca';
 $KeyPublishable = '5wCSE2B2OAV6...cpe2N1kZQzCXNTe';
 $KeySecret = 'JvH2IZ6W6fvKB7W7...ea3BLWgqcfbhQKEN1w2UDrua3sWlojPGfhp';
 
-// use TRUE if work against the Test environment 
+// use TRUE if working against the Test environment 
 // see https://makecommerce.net/en/for-developers/test-environment/
 $MK = new Maksekeskus($shopId,$KeyPublishable,$KeySecret,TRUE);
 
