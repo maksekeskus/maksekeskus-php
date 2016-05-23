@@ -1,12 +1,8 @@
 maksekeskus-php
 ===============
 
-
-See API documentation: http://docs.maksekeskus.apiary.io 
-and more on https://maksekeskus.ee/api-explorer/intro.php
-
 Download the packaged library form the repository [releases]
-(https://github.com/maksekeskus/maksekeskus-php/releases/)
+(https://github.com/maksekeskus/maksekeskus-php/releases/).
 
 Unpack it into your project folder (i.e. /htdocs/myshop/ )
 and include the libarary file ( i.e. /htdocs/myshop/Maksekeskus-1.0/Maksekeskus.php )
@@ -41,4 +37,7 @@ print "</pre>";
 
 ```
 
+See more examples on https://maksekeskus.ee/api-explorer/intro.php 
+
+and API documentation: http://docs.maksekeskus.apiary.io 
 
