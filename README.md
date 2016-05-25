@@ -12,7 +12,7 @@ Get your API keys from [merchant.maksekeskus.ee](https://merchant.maksekeskus.ee
 And off you go:
 ``` php
 <?php
- include_once 'Maksekeskus-1.0/Maksekeskus.php';
+ include_once 'maksekeskus-1.0/Maksekeskus.php';
 
 // get your API keys from merchant-test.maksekeskus.ee or merchant.maksekeskus.ee
 $shopId = '12ee0036-3719-...-9a8b-51f5770190ca';
