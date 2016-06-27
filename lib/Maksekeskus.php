@@ -261,7 +261,18 @@ class Maksekeskus
         }
 
         if ($mac_type == self::SIGNATURE_TYPE_MAC) {
-            $mac_input = json_encode($data, JSON_UNESCAPED_UNICODE);
+            
+            if (version_compare(phpversion(), '5.4.0', '<')) {
+                $mac_input = json_encode($data);
+
+                $mac_input = preg_replace_callback('/(?<!\\\\)\\\\u(\w{4})/', function ($matches) {
+                    return html_entity_decode('&#x' . $matches[1] . ';', ENT_COMPAT, 'UTF-8');
+                }, $mac_input);
+            }
+            else {
+                $mac_input = json_encode($data, JSON_UNESCAPED_UNICODE);
+            }
+            
         } else {
             if ($mac_type == self::SIGNATURE_TYPE_2) {
                $use_parts = array('amount', 'currency', 'reference', 'transaction', 'status');
