@@ -13,25 +13,25 @@ class Maksekeskus
     const SIGNATURE_TYPE_MAC = 'MAC';
 
     /**
-     * @var str API base URL
+     * @var string API base URL
      */
     private $apiUrl;
 
 
     /**
-     * @var str Shop ID
+     * @var string Shop ID
      */
     private $shopId;
 
 
     /**
-     * @var str Publishable Key
+     * @var string Publishable Key
      */
     private $publishableKey;
 
 
     /**
-     * @var str Secret Key
+     * @var string Secret Key
      */
     private $secretKey;
 
@@ -39,7 +39,7 @@ class Maksekeskus
     /**
      * Response object of the last API request
      *
-     * @var obj
+     * @var object
      */
     private $lastApiResponse;
 
@@ -47,9 +47,9 @@ class Maksekeskus
     /**
      * API client constructor
      *
-     * @param str $shopId Shop ID
-     * @param str $publishableKey Publishable API Key, NULL if not provided
-     * @param str $$secretKey Secret API Key, NULL if not provided
+     * @param string $shopId Shop ID
+     * @param string $publishableKey Publishable API Key, NULL if not provided
+     * @param string $secretKey Secret API Key, NULL if not provided
      * @param bool $testEnv TRUE if connecting to API in test environment, FALSE otherwise. Default to FALSE.
      * @return void
      */
@@ -70,7 +70,7 @@ class Maksekeskus
     /**
      * Set API base URL
      *
-     * @param str $value
+     * @param string $value
      * @return void
      */
     public function setApiUrl ($value)
@@ -82,7 +82,7 @@ class Maksekeskus
     /**
      * Get API base URL
      *
-     * @return str
+     * @return string
      */
     public function getApiUrl ()
     {
@@ -93,7 +93,7 @@ class Maksekeskus
     /**
      * Set Shop ID
      *
-     * @param str $value
+     * @param string $value
      * @return void
      */
     public function setShopId ($value)
@@ -105,7 +105,7 @@ class Maksekeskus
     /**
      * Get Shop ID
      *
-     * @return str
+     * @return string
      */
     public function getShopId ()
     {
@@ -116,7 +116,7 @@ class Maksekeskus
     /**
      * Set Publishable Key
      *
-     * @param str $value
+     * @param string $value
      * @return void
      */
     public function setPublishableKey ($value)
@@ -128,7 +128,7 @@ class Maksekeskus
     /**
      * Get Publishable Key
      *
-     * @return str
+     * @return string
      */
     public function getPublishableKey ()
     {
@@ -139,7 +139,7 @@ class Maksekeskus
     /**
      * Set Secret Key
      *
-     * @param str $value
+     * @param string $value
      * @return void
      */
     public function setSecretKey ($value)
@@ -151,7 +151,7 @@ class Maksekeskus
     /**
      * Get Secret Key
      *
-     * @return str
+     * @return string
      */
     public function getSecretKey ()
     {
@@ -250,9 +250,9 @@ class Maksekeskus
     /**
      * Prepares the input string for MAC calculation depending on integration type
      *
-     * @param str $json JSON message
+     * @param string $json JSON message
      * @param bool $v1 TRUE if REDIRECT, FALSE if API/EMBEDDED. Defaults to FALSE.
-     * @return str
+     * @return string
      */
     protected function getMacInput ($data, $mac_type)
     {
