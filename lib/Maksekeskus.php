@@ -752,5 +752,66 @@ class Maksekeskus
 
         return $response->body;
     }
+    
+    
+   /**
+     * Get carrier-specific destinations for shipments (list of Automated Parcel Machines)
+     *
+     * @param mixed. An object or array containing request body
+     * @throws Exception if failed to retrieve the listing
+     * @return obj Shop configuration object
+     */
+    public function getDestinations ($request_body)
+    {
+        $response = $this->makePostRequest("/v1/shipments/destinations", $request_body);
+
+        if (in_array($response->code, array(200))) {
+            return $response->body;
+        } else {
+            throw new Exception('Could not retrieve destinations list. Response ('.$response->code.'): '.$response->raw_body);
+        }
+    }
+
+
+
+
+    /**
+     * Create new shipments at carrier systems
+     *
+     * @param mixed An object or array containing request body
+     * @throws Exception if failed to create transaction
+     * @return obj Transaction object
+     */
+    public function createShipments ($request_body)
+    {
+        $response = $this->makePostRequest('/v1/shipments', $request_body);
+
+        if (in_array($response->code, array(200, 201))) {
+            return $response->body;
+        } else {
+            throw new Exception('Could not create shipments. Response ('.$response->code.'): '.$response->raw_body);
+        }
+    }
+
+
+        /**
+     * generate parcel labels for shipments registered at carriers
+     *
+     * @param mixed An object or array containing request body
+     * @throws Exception if failed to create transaction
+     * @return obj Transaction object
+     */
+    public function createLabels ($request_body)
+    {
+        $response = $this->makePostRequest('/v1/shipments/createlabels', $request_body);
+
+        if (in_array($response->code, array(200, 201))) {
+            return $response->body;
+        } else {
+            throw new Exception('Could generate parcel labels. Response ('.$response->code.'): '.$response->raw_body);
+        }
+    }
+
+    
 }
 
