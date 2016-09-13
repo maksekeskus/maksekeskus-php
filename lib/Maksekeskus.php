@@ -556,6 +556,26 @@ class Maksekeskus
 
 
     /**
+     * Append metadata to Transaction's merchant_data container
+     *
+     * @param string $transaction_id Transaction ID
+     * @param string $params json object, key=merchant_data, {"merchant_data":"my new metadata"}
+     * @throws Exception if failed to append metadata
+     * 
+     */
+    public function addTransactionMeta ($transaction_id, $params)
+    {
+        $response = $this->makePostRequest("/v1/transactions/{$transaction_id}/addMeta", $params);
+
+        if (!in_array($response->code, array(200, 201))) {
+            throw new Exception('Could not create payment. Response ('.$response->code.'): '.$response->raw_body);
+        }
+
+        return $response->body;
+    }
+
+
+    /**
      * Get transaction details
      *
      * @param string $transaction_id Transaction ID
