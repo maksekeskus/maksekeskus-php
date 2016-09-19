@@ -493,7 +493,7 @@ class Maksekeskus
         if (in_array($response->code, array(200))) {
             return $response->body;
         } else {
-            throw new Exception('Could not get shop data. Response ('.$response->code.'): '.$response->raw_body);
+            throw new Exception('Could not get shop data. Response ('.$response->code.'): '.$response->raw_body, $response->body->code);
         }
     }
 
@@ -511,7 +511,7 @@ class Maksekeskus
         if (in_array($response->code, array(200))) {
             return $response->body;
         } else {
-            throw new Exception('Could not get shop configuration for the environment. Response ('.$response->code.'): '.$response->raw_body);
+            throw new Exception('Could not get shop configuration for the environment. Response ('.$response->code.'): '.$response->raw_body, $response->body->code);
         }
     }
 
@@ -531,7 +531,7 @@ class Maksekeskus
         if (in_array($response->code, array(200))) {
             return $response->body;
         } else {
-            throw new Exception('Could not get shop data. Response ('.$response->code.'): '.$response->raw_body);
+            throw new Exception('Could not get shop data. Response ('.$response->code.'): '.$response->raw_body, $response->body->code);
         }
     }
 
@@ -550,7 +550,7 @@ class Maksekeskus
         if (in_array($response->code, array(200, 201))) {
             return $response->body;
         } else {
-            throw new Exception('Could not create transaction. Response ('.$response->code.'): '.$response->raw_body);
+            throw new Exception('Could not create transaction. Response ('.$response->code.'): '.$response->raw_body, $response->body->code);
         }
     }
 
@@ -568,7 +568,7 @@ class Maksekeskus
         $response = $this->makePostRequest("/v1/transactions/{$transaction_id}/addMeta", $params);
 
         if (!in_array($response->code, array(200, 201))) {
-            throw new Exception('Could not create payment. Response ('.$response->code.'): '.$response->raw_body);
+            throw new Exception('Could not create payment. Response ('.$response->code.'): '.$response->raw_body, $response->body->code);
         }
 
         return $response->body;
@@ -589,7 +589,7 @@ class Maksekeskus
         if (in_array($response->code, array(200))) {
             return $response->body;
         } else {
-            throw new Exception('Could not get transaction. Response ('.$response->code.'): '.$response->raw_body);
+            throw new Exception('Could not get transaction. Response ('.$response->code.'): '.$response->raw_body, $response->body->code);
         }
     }
 
@@ -649,7 +649,7 @@ class Maksekeskus
         $response = $this->makePostRequest('/v1/tokens', $request_body);
 
         if (!in_array($response->code, array(200, 201))) {
-            throw new Exception('Could not create payment token. Response ('.$response->code.'): '.$response->raw_body);
+            throw new Exception('Could not create payment token. Response ('.$response->code.'): '.$response->raw_body, $response->body->code);
         }
 
         return $response->body;
@@ -670,7 +670,7 @@ class Maksekeskus
         if (in_array($response->code, array(200))) {
             return $response->body;
         } else {
-            throw new Exception('Could not get token. Response ('.$response->code.'): '.$response->raw_body);
+            throw new Exception('Could not get token. Response ('.$response->code.'): '.$response->raw_body, $response->body->code);
         }
     }
 
@@ -680,7 +680,7 @@ class Maksekeskus
         $response = $this->makePostRequest("/v1/transactions/{$transaction_id}/payments", $request_body);
 
         if (!in_array($response->code, array(200, 201))) {
-            throw new Exception('Could not create payment. Response ('.$response->code.'): '.$response->raw_body);
+            throw new Exception('Could not create payment. Response ('.$response->code.'): '.$response->raw_body, $response->body->code);
         }
 
         return $response->body;
@@ -692,7 +692,7 @@ class Maksekeskus
         $response = $this->makePostRequest("/v1/transactions/{$transaction_id}/refunds", $request_body);
 
         if (!in_array($response->code, array(200, 201))) {
-            throw new Exception('Could not create refund. Response ('.$response->code.'): '.$response->raw_body);
+            throw new Exception('Could not create refund. Response ('.$response->code.'): '.$response->raw_body, $response->body->code);
         }
 
         return $response->body;
@@ -713,7 +713,7 @@ class Maksekeskus
         if (in_array($response->code, array(200))) {
             return $response->body;
         } else {
-            throw new Exception('Could not get refund. Response ('.$response->code.'): '.$response->raw_body);
+            throw new Exception('Could not get refund. Response ('.$response->code.'): '.$response->raw_body, $response->body->code);
         }
     }
 
@@ -732,7 +732,7 @@ class Maksekeskus
         if (in_array($response->code, array(200))) {
             return $response->body;
         } else {
-            throw new Exception('Could not get transaction refunds list. Response ('.$response->code.'): '.$response->raw_body);
+            throw new Exception('Could not get transaction refunds list. Response ('.$response->code.'): '.$response->raw_body, $response->body->code);
         }
     }
 
@@ -750,7 +750,7 @@ class Maksekeskus
         if (in_array($response->code, array(200))) {
             return $response->body;
         } else {
-            throw new Exception('Could not get refunds list. Response ('.$response->code.'): '.$response->raw_body);
+            throw new Exception('Could not get refunds list. Response ('.$response->code.'): '.$response->raw_body, $response->body->code);
         }
     }
 
@@ -767,7 +767,7 @@ class Maksekeskus
         $response = $this->makeGetRequest('/v1/methods', $request_params);
 
         if (!in_array($response->code, array(200))) {
-            throw new Exception('Could not get payment methods. Response ('.$response->code.'): '.$response->raw_body);
+            throw new Exception('Could not get payment methods. Response ('.$response->code.'): '.$response->raw_body, $response->body->code);
         }
 
         return $response->body;
@@ -788,7 +788,7 @@ class Maksekeskus
         if (in_array($response->code, array(200))) {
             return $response->body;
         } else {
-            throw new Exception('Could not retrieve destinations list. Response ('.$response->code.'): '.$response->raw_body);
+            throw new Exception('Could not retrieve destinations list. Response ('.$response->code.'): '.$response->raw_body, $response->body->code);
         }
     }
 
@@ -809,7 +809,7 @@ class Maksekeskus
         if (in_array($response->code, array(200, 201))) {
             return $response->body;
         } else {
-            throw new Exception('Could not create shipments. Response ('.$response->code.'): '.$response->raw_body);
+            throw new Exception('Could not create shipments. Response ('.$response->code.'): '.$response->raw_body, $response->body->code);
         }
     }
 
@@ -828,7 +828,7 @@ class Maksekeskus
         if (in_array($response->code, array(200, 201))) {
             return $response->body;
         } else {
-            throw new Exception('Could generate parcel labels. Response ('.$response->code.'): '.$response->raw_body);
+            throw new Exception('Could generate parcel labels. Response ('.$response->code.'): '.$response->raw_body, $response->body->code);
         }
     }
 
