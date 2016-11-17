@@ -12,14 +12,16 @@ Get your API keys from [merchant.maksekeskus.ee](https://merchant.maksekeskus.ee
 And off you go:
 ``` php
 <?php
- include_once 'maksekeskus-1.0/Maksekeskus.php';
 
 // get your API keys from merchant-test.maksekeskus.ee or merchant.maksekeskus.ee
+require __DIR__ . '/maksekeskus-1.0/vendor/autoload.php';
+use Maksekeskus\Maksekeskus;
+
 $shopId = '12ee0036-3719-...-9a8b-51f5770190ca';
 $KeyPublishable = '5wCSE2B2OAV6...cpe2N1kZQzCXNTe';
 $KeySecret = 'JvH2IZ6W6fvKB7W7...ea3BLWgqcfbhQKEN1w2UDrua3sWlojPGfhp';
 
-// use TRUE if working against the Test environment 
+// use TRUE if working against the Test environment
 // see https://makecommerce.net/en/for-developers/test-environment/
 $MK = new Maksekeskus($shopId,$KeyPublishable,$KeySecret,TRUE);
 
@@ -33,8 +35,6 @@ print_r($data);
 print "</pre>";
 
 ?>
-
-
 ```
 
 See more examples on https://maksekeskus.ee/api-explorer/intro.php 
