@@ -2,6 +2,7 @@
 {
     "name": "maksekeskus/maksekeskus-php",
     "description": "Maksekeskus PHP SDK",
+    "type": "library",
     "keywords": [
         "maksekeskus",
         "billing",
@@ -26,5 +27,6 @@
         "psr-4": {
             "Maksekeskus\\": "lib/"
         }
-    }
+    },
+    "minimum-stability": "dev"
 }
