@@ -1,5 +1,7 @@
 <?php
+namespace Maksekeskus;
 
+use Exception;
 use Httpful\Http;
 use Httpful\Request;
 

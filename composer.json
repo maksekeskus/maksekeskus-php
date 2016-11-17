@@ -23,6 +23,8 @@
         "ext-json": "*"
     },
     "autoload": {
-      "classmap": [""]
+        "psr-4": {
+            "Maksekeskus\\": "lib/"
+        }
     }
 }
