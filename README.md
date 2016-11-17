@@ -1,20 +1,42 @@
 maksekeskus-php
 ===============
 
+#Installation
+
+## Composer
+
+``` json
+{
+    "repositories": [
+        {
+            "type": "vcs",
+            "url": "https://github.com/maksekeskus/maksekeskus-php"
+        }
+    ],
+    "require": {
+        "maksekeskus/maksekeskus-php": "v1.1"
+    }
+}
+```
+
+## Prebuilt packages
+
 Download the packaged library form the repository [releases]
 (https://github.com/maksekeskus/maksekeskus-php/releases/).
 
 Unpack it into your project folder (i.e. /htdocs/myshop/ )
-and include the libarary file ( i.e. /htdocs/myshop/Maksekeskus-1.0/Maksekeskus.php )
+and include the libarary file ( i.e. /htdocs/myshop/Maksekeskus-1.1/Maksekeskus.php )
 
 Get your API keys from [merchant.maksekeskus.ee](https://merchant.maksekeskus.ee) or [merchant-test.maksekeskus.ee](https://merchant-test.maksekeskus.ee)
 
-And off you go:
+# Example
+
 ``` php
 <?php
 
 // get your API keys from merchant-test.maksekeskus.ee or merchant.maksekeskus.ee
-require __DIR__ . '/maksekeskus-1.0/vendor/autoload.php';
+require __DIR__ . '/maksekeskus-1.1/vendor/autoload.php'; //Comment this line out if you are using Composer to build your project
+
 use Maksekeskus\Maksekeskus;
 
 $shopId = '12ee0036-3719-...-9a8b-51f5770190ca';
