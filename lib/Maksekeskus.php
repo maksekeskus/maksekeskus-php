@@ -1,8 +1,7 @@
 <?php
+namespace Maksekeskus;
 
-// use the composer.json to install dependancies (https://getcomposer.org/)
-// autoload the composer-installed classes
-require __DIR__ . '/vendor/autoload.php';
+use Exception;
 use Httpful\Http;
 use Httpful\Request;
 

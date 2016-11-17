@@ -14,10 +14,11 @@ VERSION=$1
 rm -rf maksekeskus-$VERSION
 
 mkdir maksekeskus-$VERSION/
-cp -rp lib/* maksekeskus-$VERSION/
+cp -rp lib maksekeskus-$VERSION/
+cp composer.json maksekeskus-$VERSION/
 
 cd maksekeskus-$VERSION/
-composer install
+composer install --no-dev
 rm composer.lock composer.json
 
 cd ..
