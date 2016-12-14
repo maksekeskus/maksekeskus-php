@@ -31,6 +31,16 @@ class Maksekeskus
      */
     private $apiUrl;
 
+    /**
+     * @var str Payment Gateway base URL
+     */
+    private $gwUrl;
+
+    /**
+     * @var str base URL of static resources
+     */
+    private $staticsUrl;
+
 
     /**
      * @var string Shop ID
@@ -57,6 +67,12 @@ class Maksekeskus
      */
     private $lastApiResponse;
 
+    /**
+     * Urls of endpoints of current Environment Key
+     * @var array
+     */
+    private $envUrls;
+
 
     /**
      * API client constructor
@@ -75,9 +91,33 @@ class Maksekeskus
 
         if ($testEnv) {
             $this->setApiUrl('https://api-test.maksekeskus.ee');
+            $this->envUrls = array(
+                    'apiUrl' => 'https://api-test.maksekeskus.ee',
+                    'checkoutjsUrl' => 'https://payment-test.maksekeskus.ee/checkout/dist/',
+                    'gatewayUrl' => 'https://payment-test.maksekeskus.ee/pay/1/signed.html',
+                    'merchantUrl' => 'https://merchant-test.maksekeskus.ee/',
+                    'staticsUrl' => 'https://static-test.maksekeskus.ee/'
+                 );
         } else {
             $this->setApiUrl('https://api.maksekeskus.ee');
+            $this->envUrls = array(
+                    'apiUrl' => 'https://api.maksekeskus.ee',
+                    'checkoutjsUrl' => 'https://payment.maksekeskus.ee/checkout/dist/',
+                    'gatewayUrl' => 'https://payment.maksekeskus.ee/pay/1/signed.html',
+                    'merchantUrl' => 'https://merchant.maksekeskus.ee/',
+                    'staticsUrl' => 'https://static.maksekeskus.ee/'
+                 );
         }
+    }
+
+    /**
+     * Get URL's of endpoints of current environment (Test vs Live)
+     *
+     * @return object
+     */
+    public function getEnvUrls ()
+    {
+        return (object) $this->envUrls;
     }
 
 
@@ -103,6 +143,49 @@ class Maksekeskus
         return $this->apiUrl;
     }
 
+    /**
+     * Set GW base URL
+     *
+     * @param string $value
+     * @return void
+     */
+    public function setGwUrl ($value)
+    {
+        $this->gwUrl = $value;
+    }
+
+
+    /**
+     * Get GW base URL
+     *
+     * @return string
+     */
+    public function getGwUrl ()
+    {
+        return $this->gwUrl;
+    }
+
+    /**
+     * Set URL for static resources ( js, images)
+     *
+     * @param string $value
+     * @return void
+     */
+    public function setStaticsUrl ($value)
+    {
+        $this->staticsUrl = $value;
+    }
+
+
+    /**
+     * Get URL for static resources ( js, images)
+     *
+     * @return string
+     */
+    public function getStaticsUrl ()
+    {
+        return $this->staticsUrl;
+    }
 
     /**
      * Set Shop ID
