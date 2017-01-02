@@ -753,24 +753,6 @@ class Maksekeskus
     }
 
 
-    /**
-     * Get token by email or cookie ID
-    *
-    * @param string $request_params Request parameters
-    * @throws MKException if failed to get token object
-    * @return obj Token object
-    */
-    public function getToken ($request_params)
-    {
-        $response = $this->makeGetRequest('/v1/tokens', $request_params);
-
-        if (in_array($response->code, array(200))) {
-            return $response->body;
-        } else {
-            throw new MKException($response->raw_body, 'Could not get token. Response ('.$response->code.'): '.$response->raw_body, $response->body->code);
-        }
-    }
-
 
     public function createPayment ($transaction_id, $request_body)
     {
