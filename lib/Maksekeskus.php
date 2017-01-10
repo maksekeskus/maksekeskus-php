@@ -911,6 +911,24 @@ class Maksekeskus
         }
     }
 
+    /**
+     * generate shopping cart for SimpleCheckout
+     *
+     * @param mixed An object or array containing request body
+     * @throws MKException if failed to create transaction
+     * @return obj Transaction object
+     */
+    public function createCart ($request_body)
+    {
+        $response = $this->makePostRequest('/v1/carts', $request_body);
+
+        if (in_array($response->code, array(200, 201))) {
+            return $response->body;
+        } else {
+            throw new MKException($response->raw_body, 'Could not generate cart. Response ('.$response->code.'): '.$response->raw_body, $response->body->code);
+        }
+    }
+
     
 }
 
