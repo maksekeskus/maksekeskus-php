@@ -34,11 +34,11 @@ Get your API keys from [merchant.maksekeskus.ee](https://merchant.maksekeskus.ee
 ``` php
 <?php
 
-// get your API keys from merchant-test.maksekeskus.ee or merchant.maksekeskus.ee
 require __DIR__ . '/maksekeskus-1.1/vendor/autoload.php'; //Comment this line out if you are using Composer to build your project
 
 use Maksekeskus\Maksekeskus;
 
+// get your API keys from merchant-test.maksekeskus.ee or merchant.maksekeskus.ee
 $shopId = '12ee0036-3719-...-9a8b-51f5770190ca';
 $KeyPublishable = '5wCSE2B2OAV6...cpe2N1kZQzCXNTe';
 $KeySecret = 'JvH2IZ6W6fvKB7W7...ea3BLWgqcfbhQKEN1w2UDrua3sWlojPGfhp';
