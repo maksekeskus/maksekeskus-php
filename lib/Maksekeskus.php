@@ -544,16 +544,19 @@ class Maksekeskus
 
         if ($method == Http::GET) {
             $response = Request::get($uri)
+                ->withStrictSSL()
                 ->authenticateWith($auth_user, $auth_pass)
                 ->send();
         } else if ($method == Http::POST) {
             $response = Request::post($uri)
+                ->withStrictSSL()
                 ->authenticateWith($auth_user, $auth_pass)
                 ->sendsJson()
                 ->body(json_encode($body))
                 ->send();
         } else if ($method == Http::PUT) {
             $response = Request::put($uri)
+                ->withStrictSSL()
                 ->authenticateWith($auth_user, $auth_pass)
                 ->sendsJson()
                 ->body(json_encode($body))
