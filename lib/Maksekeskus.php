@@ -367,7 +367,7 @@ class Maksekeskus
                 }, $mac_input);
             }
             else {
-                $mac_input = json_encode($data, JSON_UNESCAPED_UNICODE);
+                $mac_input = json_encode($data, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);
             }
             
         } else {
