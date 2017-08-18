@@ -59,7 +59,6 @@ print "</pre>";
 ?>
 ```
 
-See more examples on https://maksekeskus.ee/api-explorer/intro.php 
+See more examples on https://developer.maksekeskus.ee/ 
 
-and API documentation: http://docs.maksekeskus.apiary.io 
 
