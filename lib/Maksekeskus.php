@@ -59,6 +59,10 @@ class Maksekeskus
      */
     private $secretKey;
 
+    /**
+     * @var string library Version
+     */
+    private $version = "1.4.0";
 
     /**
      * Response object of the last API request
@@ -111,10 +115,22 @@ class Maksekeskus
     }
 
     /**
+     * Get version of this library
+     *
+     * @return object
+     */
+
+    public function getVersion ()
+    {
+        return $this->version;
+    }
+
+    /**
      * Get URL's of endpoints of current environment (Test vs Live)
      *
      * @return object
      */
+
     public function getEnvUrls ()
     {
         return (object) $this->envUrls;
@@ -690,6 +706,24 @@ class Maksekeskus
             return $response->body;
         } else {
             throw new MKException($response->raw_body, 'Could not get transaction. Response ('.$response->code.'): '.$response->raw_body, $response->body->code);
+        }
+    }
+
+    /**
+     * Get transaction statement details
+     *
+     * @param string $transaction_id Transaction ID
+     * @throws MKException if failed to get transaction object
+     * @return obj TransactionStatement object
+     */
+    public function getTransactionStatement ($transaction_id)
+    {
+        $response = $this->makeGetRequest("/v1/transactions/{$transaction_id}/statement");
+
+        if (in_array($response->code, array(200))) {
+            return $response->body;
+        } else {
+            throw new MKException($response->raw_body, 'Could not get transaction statement. Response ('.$response->code.'): '.$response->raw_body, $response->body->code);
         }
     }
 
