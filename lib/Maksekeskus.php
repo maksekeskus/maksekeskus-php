@@ -62,7 +62,7 @@ class Maksekeskus
     /**
      * @var string library Version
      */
-    private $version = "1.4.0";
+    private $version = "1.4.1";
 
     /**
      * Response object of the last API request
@@ -99,7 +99,7 @@ class Maksekeskus
                     'apiUrl' => 'https://api-test.maksekeskus.ee',
                     'checkoutjsUrl' => 'https://payment-test.maksekeskus.ee/checkout/dist/',
                     'gatewayUrl' => 'https://payment-test.maksekeskus.ee/pay/1/signed.html',
-                    'merchantUrl' => 'https://merchant-test.maksekeskus.ee/',
+                    'merchantUrl' => 'https://merchant.test.maksekeskus.ee/',
                     'staticsUrl' => 'https://static-test.maksekeskus.ee/'
                  );
         } else {
