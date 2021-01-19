@@ -9,12 +9,12 @@
         "payments",
         "api"
     ],
-    "homepage": "http://maksekeskus.ee",
+    "homepage": "https://makecommerce.net",
     "license": "MIT",
     "authors": [
         {
-            "name": "Mihkel Karu",
-            "email": "mihkel@maksekeskus.ee"
+            "name": "Maksekeskus",
+            "email": "support@maksekeskus.ee"
         }
     ],
     "require": {
