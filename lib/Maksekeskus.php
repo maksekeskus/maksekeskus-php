@@ -62,7 +62,7 @@ class Maksekeskus
     /**
      * @var string library Version
      */
-    private $version = "1.4.1";
+    private $version = "1.4.2";
 
     /**
      * Response object of the last API request
@@ -94,11 +94,11 @@ class Maksekeskus
         $this->setSecretKey($secretKey);
 
         if ($testEnv) {
-            $this->setApiUrl('https://api-test.maksekeskus.ee');
+            $this->setApiUrl('https://api.test.maksekeskus.ee');
             $this->envUrls = array(
-                    'apiUrl' => 'https://api-test.maksekeskus.ee',
-                    'checkoutjsUrl' => 'https://payment-test.maksekeskus.ee/checkout/dist/',
-                    'gatewayUrl' => 'https://payment-test.maksekeskus.ee/pay/1/signed.html',
+                    'apiUrl' => 'https://api.test.maksekeskus.ee',
+                    'checkoutjsUrl' => 'https://payment.test.maksekeskus.ee/checkout/dist/',
+                    'gatewayUrl' => 'https://payment.test.maksekeskus.ee/pay/1/signed.html',
                     'merchantUrl' => 'https://merchant.test.maksekeskus.ee/',
                     'staticsUrl' => 'https://static-test.maksekeskus.ee/'
                  );
