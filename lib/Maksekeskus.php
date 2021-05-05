@@ -62,7 +62,7 @@ class Maksekeskus
     /**
      * @var string library Version
      */
-    private $version = "1.4.2";
+    private $version = "1.4.3";
 
     /**
      * Response object of the last API request
@@ -929,8 +929,25 @@ class Maksekeskus
         }
     }
 
+    /**
+     * get label formats
+     *
+     * @param mixed An object or array containing request body
+     * @throws Exception if failed to get label formats list
+     * @return array List of label formats
+     */
+    public function getLabelFormats ()
+    {
+        $response = $this->makeGetRequest('/v1/shipments/labels/formats');
 
-        /**
+        if (in_array($response->code, array(200, 201))) {
+            return $response->body;
+        } else {
+            throw new Exception('Could not get parcel label formats. Response ('.$response->code.'): '.$response->raw_body);
+        }
+    }
+
+   /**
      * generate parcel labels for shipments registered at carriers
      *
      * @param mixed An object or array containing request body
@@ -944,7 +961,7 @@ class Maksekeskus
         if (in_array($response->code, array(200, 201))) {
             return $response->body;
         } else {
-            throw new MKException($response->raw_body, 'Could generate parcel labels. Response ('.$response->code.'): '.$response->raw_body, $response->body->code);
+            throw new MKException($response->raw_body, 'Could not generate parcel labels. Response ('.$response->code.'): '.$response->raw_body, $response->body->code);
         }
     }
 

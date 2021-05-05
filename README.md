@@ -14,7 +14,7 @@ maksekeskus-php
         }
     ],
     "require": {
-        "maksekeskus/maksekeskus-php": "v1.4.2"
+        "maksekeskus/maksekeskus-php": "v1.4.3"
     }
 }
 ```
@@ -25,7 +25,7 @@ Download the packaged library form the repository [releases]
 (https://github.com/maksekeskus/maksekeskus-php/releases/).
 
 Unpack it into your project folder (i.e. /htdocs/myshop/ )
-and include the libarary file ( i.e. /htdocs/myshop/Maksekeskus-1.4.2/Maksekeskus.php )
+and include the libarary file ( i.e. /htdocs/myshop/Maksekeskus-1.4.3/Maksekeskus.php )
 
 Get your API keys from [merchant.maksekeskus.ee](https://merchant.maksekeskus.ee) or [merchant.test.maksekeskus.ee](https://merchant.test.maksekeskus.ee)
 
@@ -34,7 +34,7 @@ Get your API keys from [merchant.maksekeskus.ee](https://merchant.maksekeskus.ee
 ``` php
 <?php
 
-require __DIR__ . '/maksekeskus-1.4.2/vendor/autoload.php'; //Comment this line out if you are using Composer to build your project
+require __DIR__ . '/maksekeskus-1.4.3/vendor/autoload.php'; //Comment this line out if you are using Composer to build your project
 
 use Maksekeskus\Maksekeskus;
 
