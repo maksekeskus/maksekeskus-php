@@ -932,7 +932,6 @@ class Maksekeskus
     /**
      * get label formats
      *
-     * @param mixed An object or array containing request body
      * @throws Exception if failed to get label formats list
      * @return array List of label formats
      */
