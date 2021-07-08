@@ -932,7 +932,7 @@ class Maksekeskus
     /**
      * get label formats
      *
-     * @throws Exception if failed to get label formats list
+     * @throws MKException if failed to get label formats list
      * @return array List of label formats
      */
     public function getLabelFormats ()
@@ -942,7 +942,7 @@ class Maksekeskus
         if (in_array($response->code, array(200, 201))) {
             return $response->body;
         } else {
-            throw new Exception('Could not get parcel label formats. Response ('.$response->code.'): '.$response->raw_body);
+            throw new MKException('Could not get parcel label formats. Response ('.$response->code.'): '.$response->raw_body);
         }
     }
 
