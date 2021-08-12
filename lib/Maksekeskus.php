@@ -2,12 +2,12 @@
 
 namespace MakeCommerce;
 
-use Exception;
-use Httpful\Http;
-use Httpful\Request;
-
 class Maksekeskus
 {
+    const GET = 'get';
+    const POST = 'post';
+    const PUT = 'put';
+
     /**
      * @var string API base URL
      */
@@ -54,7 +54,7 @@ class Maksekeskus
      * @param bool $testEnv TRUE if connecting to API in test environment, FALSE otherwise. Default to FALSE.
      * @return void
      */
-    public function __construct ($shopId, $secretKey, $testEnv = FALSE)
+    public function __construct($shopId, $secretKey, $testEnv = FALSE)
     {
         $this->setShopId($shopId);
         $this->setSecretKey($secretKey);
@@ -83,9 +83,9 @@ class Maksekeskus
     /**
      * Get version of this library
      *
-     * @return object
+     * @return string
      */
-    public function getVersion ()
+    public function getVersion()
     {
         return $this->version;
     }
@@ -95,7 +95,7 @@ class Maksekeskus
      *
      * @return object
      */
-    public function getEnvUrls ()
+    public function getEnvUrls()
     {
         return (object) $this->envUrls;
     }
@@ -106,7 +106,7 @@ class Maksekeskus
      * @param string $value
      * @return void
      */
-    public function setApiUrl ($value)
+    public function setApiUrl($value)
     {
         $this->apiUrl = $value;
     }
@@ -116,18 +116,18 @@ class Maksekeskus
      *
      * @return string
      */
-    public function getApiUrl ()
+    public function getApiUrl()
     {
         return $this->apiUrl;
     }
 
     /**
-     * Set URL for static resources ( js, images)
+     * Set URL for static resources (js, images)
      *
      * @param string $value
      * @return void
      */
-    public function setStaticsUrl ($value)
+    public function setStaticsUrl($value)
     {
         $this->staticsUrl = $value;
     }
@@ -137,7 +137,7 @@ class Maksekeskus
      *
      * @return string
      */
-    public function getStaticsUrl ()
+    public function getStaticsUrl()
     {
         return $this->staticsUrl;
     }
@@ -148,7 +148,7 @@ class Maksekeskus
      * @param string $value
      * @return void
      */
-    public function setShopId ($value)
+    public function setShopId($value)
     {
         $this->shopId = $value;
     }
@@ -158,7 +158,7 @@ class Maksekeskus
      *
      * @return string
      */
-    public function getShopId ()
+    public function getShopId()
     {
         return $this->shopId;
     }
@@ -169,7 +169,7 @@ class Maksekeskus
      * @param string $value
      * @return void
      */
-    public function setSecretKey ($value)
+    public function setSecretKey($value)
     {
         $this->secretKey = $value;
     }
@@ -179,58 +179,22 @@ class Maksekeskus
      *
      * @return string
      */
-    public function getSecretKey ()
+    public function getSecretKey()
     {
         return $this->secretKey;
     }
 
     /**
-     * Send a GET request to an API endpoint
-     *
-     * @param string $endpoint API endpoint
-     * @param array $params Request parameters
-     * @return obj Response object
-     */
-    public function makeGetRequest ($endpoint, $params = NULL)
-    {
-        return $this->makeApiRequest(Http::GET, $endpoint, $params);
-    }
-
-    /**
-     * Send a POST request to an API endpoint
-     *
-     * @param string $endpoint API endpoint
-     * @param string $body Request body
-     * @return obj Response object
-     */
-    public function makePostRequest ($endpoint, $body = NULL)
-    {
-        return $this->makeApiRequest(Http::POST, $endpoint, NULL, $body);
-    }
-
-    /**
-     * Send a GET request to an API endpoint
-     *
-     * @param string $endpoint API endpoint
-     * @param array $params Request parameters
-     * @param string $body Request body
-     * @return obj Response object
-     */
-    public function makePutRequest ($endpoint, $params = NULL, $body = NULL)
-    {
-        return $this->makeApiRequest(Http::PUT, $endpoint, $params, $body);
-    }
-
-    /**
      * Send a request to an API endpoint
      *
-     * @param string $method Request method (Http::GET, Http::POST or Http::PUT)
-     * @param string $endpoint API endpoint
-     * @param array $params Request parameters
-     * @param string $body Request body
-     * @return obj Response object
+     * @param $method Request method (GET, POST or PUT)
+     * @param $endpoint API endpoint
+     * @param null $params Request parameters
+     * @param null $body Request body
+     * @return mixed Response object
+     * @throws MKResponseException Response status was not 200 or 201
      */
-    protected function makeApiRequest ($method, $endpoint, $params = NULL, $body = NULL)
+    private function makeApiRequest($method, $endpoint, $params = NULL, $body = NULL)
     {
         $uri = $this->apiUrl . $endpoint;
 
@@ -241,29 +205,36 @@ class Maksekeskus
         $auth_user = $this->getShopId();
         $auth_pass = $this->getSecretKey();
 
-        if ($method == Http::GET) {
-            $response = Request::get($uri)
-                ->withStrictSSL()
-                ->authenticateWith($auth_user, $auth_pass)
-                ->send();
-        } else if ($method == Http::POST) {
-            $response = Request::post($uri)
-                ->withStrictSSL()
-                ->authenticateWith($auth_user, $auth_pass)
-                ->sendsJson()
-                ->body(json_encode($body))
-                ->send();
-        } else if ($method == Http::PUT) {
-            $response = Request::put($uri)
-                ->withStrictSSL()
-                ->authenticateWith($auth_user, $auth_pass)
-                ->sendsJson()
-                ->body(json_encode($body))
-                ->send();
+        switch($method) {
+            case self::POST:
+                $response = Request::post($uri)
+                    ->withStrictSSL()
+                    ->authenticateWith($auth_user, $auth_pass)
+                    ->sendsJson()
+                    ->body(json_encode($body))
+                    ->send();
+                break;
+            case self::PUT:
+                $response = Request::put($uri)
+                    ->withStrictSSL()
+                    ->authenticateWith($auth_user, $auth_pass)
+                    ->sendsJson()
+                    ->body(json_encode($body))
+                    ->send();
+                break;
+            default: // also self::GET:
+                $response = Request::get($uri)
+                    ->withStrictSSL()
+                    ->authenticateWith($auth_user, $auth_pass)
+                    ->send();
+                break;
         }
 
         $this->lastApiResponse = $response;
 
+        if (!in_array($response->code, array(200, 201))) {
+            throw new MKResponseException($response->body->message, $response->body->code);
+        }
         return $response;
     }
 
@@ -272,135 +243,100 @@ class Maksekeskus
      *
      * @return obj
      */
-    public function getLastApiResponse ()
+    public function getLastApiResponse()
     {
         return $this->lastApiResponse;
     }
 
     /**
-     * Get shop data
+     * Get shop data.
      *
-     * @throws MKException if failed to get shop data
-     * @return obj Shop object
+     * @return mixed Shop data
+     * @throws MKResponseException Unable to get shop
      */
-    public function getShop ()
+    public function getShop()
     {
-        $response = $this->makeGetRequest("/v1/shop");
-
-        if (in_array($response->code, array(200))) {
-            return $response->body;
-        } else {
-            throw new MKException($response->raw_body, 'Could not get shop data. Response ('.$response->code.'): '.$response->raw_body, $response->body->code);
-        }
+        $response = $this->makeAPIRequest(self::GET, "/v1/shop");
+        return $response->body;
     }
 
    /**
-     * Get shop config for e-shop integration 
+     * Get shop config for e-shop integration.
      *
-     * @param string $environment json-encoded key-value pairs describing the e-shop environment
-     * @throws MKException if failed to get shop configuration
-     * @return obj Shop configuration object
+     * @param $environment json-encoded key-value pairs describing the e-shop environment
+     * @return mixed Shop configuration object
+     * @throws MKResponseException if failed to get shop configuration
      */
-    public function getShopConfig ($environment)
+    public function getShopConfig($environment)
     {
-        $response = $this->makeGetRequest("/v1/shop/configuration", $environment);
-
-        if (in_array($response->code, array(200))) {
-            return $response->body;
-        } else {
-            throw new MKException($response->raw_body, 'Could not get shop configuration for the environment. Response ('.$response->code.'): '.$response->raw_body, $response->body->code);
-        }
+        $response = $this->makeApiRequest(self::GET, "/v1/shop/configuration", $environment);
+        return $response->body;
     }
 
     /**
      * Update shop data
      *
-     * @param mixed An object or array containing request body
-     * @throws MKException if failed to update shop data
-     * @return obj Shop object
+     * @param $request_body if failed to get shop configuration
+     * @return mixed Shop object
+     * @throws MKResponseException if failed to update shop data
      */
-    public function updateShop ($request_body)
+    public function updateShop($request_body)
     {
-        $response = $this->makePutRequest("/v1/shop", NULL, $request_body);
-
-        if (in_array($response->code, array(200))) {
-            return $response->body;
-        } else {
-            throw new MKException($response->raw_body, 'Could not get shop data. Response ('.$response->code.'): '.$response->raw_body, $response->body->code);
-        }
-    }
-
-    /**
-     * Create new transaction
-     *
-     * @param mixed An object or array containing request body
-     * @throws MKException if failed to create transaction
-     * @return obj Transaction object
-     */
-    public function createTransaction ($request_body)
-    {
-        $response = $this->makePostRequest('/v1/transactions', $request_body);
-
-        if (in_array($response->code, array(200, 201))) {
-            return $response->body;
-        } else {
-            throw new MKException($response->raw_body, 'Could not create transaction. Response ('.$response->code.'): '.$response->raw_body, $response->body->code);
-        }
-    }
-
-    /**
-     * Append metadata to Transaction's merchant_data container
-     *
-     * @param string $transaction_id Transaction ID
-     * @param string $params json object, key=merchant_data, {"merchant_data":"my new metadata"}
-     * @throws MKException if failed to append metadata
-     * 
-     */
-    public function addTransactionMeta ($transaction_id, $params)
-    {
-        $response = $this->makePostRequest("/v1/transactions/{$transaction_id}/addMeta", $params);
-
-        if (!in_array($response->code, array(200, 201))) {
-            throw new MKException($response->raw_body, 'Could not create payment. Response ('.$response->code.'): '.$response->raw_body, $response->body->code);
-        }
-
+        $response = $this->makeApiRequest(self::PUT, "/v1/shop", NULL, $request_body);
         return $response->body;
     }
 
     /**
-     * Get transaction details
+     * Create new transaction.
      *
-     * @param string $transaction_id Transaction ID
-     * @throws MKException if failed to get transaction object
-     * @return obj Transaction object
+     * @param $request_body An object or array containing request body
+     * @return mixed if failed to create transaction
+     * @throws MKResponseException if failed to create transaction
      */
-    public function getTransaction ($transaction_id)
+    public function createTransaction($request_body)
     {
-        $response = $this->makeGetRequest("/v1/transactions/{$transaction_id}");
+        $response = $this->makeApiRequest(self::POST, '/v1/transactions', NULL, $request_body);
+        return $response->body;
+    }
 
-        if (in_array($response->code, array(200))) {
-            return $response->body;
-        } else {
-            throw new MKException($response->raw_body, 'Could not get transaction. Response ('.$response->code.'): '.$response->raw_body, $response->body->code);
-        }
+    /**
+     * Append metadata to Transaction's merchant_data container.
+     *
+     * @param $transaction_id Transaction ID
+     * @param $params json object, key=merchant_data, {"merchant_data":"my new metadata"}
+     * @return mixed
+     * @throws MKResponseException if failed to append metadata
+     */
+    public function addTransactionMeta($transaction_id, $params)
+    {
+        $response = $this->makeApiRequest(self::POST,"/v1/transactions/{$transaction_id}/addMeta", NULL, $params);
+        return $response->body;
+    }
+
+    /**
+     * Get transaction details.
+     *
+     * @param $transaction_id Transaction ID
+     * @return mixed Transaction object
+     * @throws MKResponseException if failed to get transaction object
+     */
+    public function getTransaction($transaction_id)
+    {
+        $response = $this->makeApiRequest(self::GET, "/v1/transactions/{$transaction_id}");
+        return $response->body;
     }
 
     /**
      * Get transaction statement details
      *
-     * @param string $transaction_id Transaction ID
-     * @throws MKException if failed to get transaction object
-     * @return obj TransactionStatement object
+     * @param $transaction_id Transaction ID
+     * @return mixed TransactionStatement object
+     * @throws MKResponseException if failed to get transaction object
      */
-    public function getTransactionStatement ($transaction_id)
+    public function getTransactionStatement($transaction_id)
     {
-        $response = $this->makeGetRequest("/v1/transactions/{$transaction_id}/statement");
-
-        if (in_array($response->code, array(200))) {
-            return $response->body;
-        } else {
-            throw new MKException($response->raw_body, 'Could not get transaction statement. Response ('.$response->code.'): '.$response->raw_body, $response->body->code);
-        }
+        $response = $this->makeApiRequest(self::GET, "/v1/transactions/{$transaction_id}/statement");
+        return $response->body;
     }
 
     /**
@@ -409,7 +345,7 @@ class Maksekeskus
      * @param array $params Associative array of query parameters
      * @return obj Transactions list
      */
-    public function getTransactions ($params = array())
+    public function getTransactions($params = array())
     {
         $request_params = array();
 
@@ -449,198 +385,163 @@ class Maksekeskus
             $request_params['per_page'] = (int) $params['per_page'];
         }
 
-        return $this->makeGetRequest("/v1/transactions", $request_params)->body;
+        return $this->makeApiRequest(self::GET, "/v1/transactions", $request_params)->body;
+        // TODO: Exception handling
     }
 
-    public function createToken ($request_body)
+    /**
+     * Create token.
+     *
+     * @param $request_body
+     * @return mixed
+     * @throws MKResponseException
+     */
+    public function createToken($request_body)
     {
-        $response = $this->makePostRequest('/v1/tokens', $request_body);
-
-        if (!in_array($response->code, array(200, 201))) {
-            throw new MKException($response->raw_body, 'Could not create payment token. Response ('.$response->code.'): '.$response->raw_body, $response->body->code);
-        }
-
-        return $response->body;
-    }
-
-    public function createPayment ($transaction_id, $request_body)
-    {
-        $response = $this->makePostRequest("/v1/transactions/{$transaction_id}/payments", $request_body);
-
-        if (!in_array($response->code, array(200, 201))) {
-            throw new MKException($response->raw_body, 'Could not create payment. Response ('.$response->code.'): '.$response->raw_body, $response->body->code);
-        }
-
-        return $response->body;
-    }
-
-    public function createRefund ($transaction_id, $request_body)
-    {
-        $response = $this->makePostRequest("/v1/transactions/{$transaction_id}/refunds", $request_body);
-
-        if (!in_array($response->code, array(200, 201))) {
-            throw new MKException($response->raw_body, 'Could not create refund. Response ('.$response->code.'): '.$response->raw_body, $response->body->code);
-        }
+        $response = $this->makeApiRequest(self::POST, '/v1/tokens', NULL, $request_body);
         return $response->body;
     }
 
     /**
-     * Get refund details
+     * Create payment.
      *
-     * @param string $refund_id Refund ID
-     * @throws MKException if failed to get refund object
-     * @return obj Refund object
+     * @param $transaction_id
+     * @param $request_body
+     * @return mixed
+     * @throws MKResponseException
      */
-    public function getRefund ($refund_id)
+    public function createPayment($transaction_id, $request_body)
     {
-        $response = $this->makeGetRequest("/v1/refunds/{$refund_id}");
+        $response = $this->makeApiRequest(self::POST, "/v1/transactions/{$transaction_id}/payments", NULL, $request_body);
+        return $response->body;
+    }
 
-        if (in_array($response->code, array(200))) {
-            return $response->body;
-        } else {
-            throw new MKException($response->raw_body, 'Could not get refund. Response ('.$response->code.'): '.$response->raw_body, $response->body->code);
-        }
+    /**
+     * Create refund.
+     *
+     * @param $transaction_id
+     * @param $request_body
+     * @return mixed
+     * @throws MKResponseException
+     */
+    public function createRefund($transaction_id, $request_body)
+    {
+        $response = $this->makeApiRequest(self::POST, "/v1/transactions/{$transaction_id}/refunds", NULL, $request_body);
+        return $response->body;
+    }
+
+    /**
+     * Get refund details.
+     *
+     * @param $refund_id Refund ID
+     * @return mixed Refund object
+     * @throws MKResponseException if failed to get refund object
+     */
+    public function getRefund($refund_id)
+    {
+        $response = $this->makeApiRequest(self::GET, "/v1/refunds/{$refund_id}");
+        return $response->body;
     }
 
     /**
      * Get a list of a transaction's refunds
      *
-     * @param string $transaction_id Transaction ID
-     * @throws MKException if failed to get refunds list
-     * @return array Refund objects
+     * @param $transaction_id Transaction ID
+     * @return mixed Refund objects
+     * @throws MKResponseException if failed to get refunds list
      */
-    public function getTransactionRefunds ($transaction_id)
+    public function getTransactionRefunds($transaction_id)
     {
-        $response = $this->makeGetRequest("/v1/refunds");
-
-        if (in_array($response->code, array(200))) {
-            return $response->body;
-        } else {
-            throw new MKException($response->raw_body, 'Could not get transaction refunds list. Response ('.$response->code.'): '.$response->raw_body, $response->body->code);
-        }
+        $response = $this->makeApiRequest(self::GET, '/v1/refunds');
+        return $response->body;
     }
 
     /**
      * Get a list of refunds
      *
-     * @throws MKException if failed to get refunds list
-     * @return array Refund objects
+     * @return mixed Refund objects
+     * @throws MKResponseException if failed to get refunds list
      */
-    public function getRefunds ()
+    public function getRefunds()
     {
-        $response = $this->makeGetRequest("/v1/refunds");
-
-        if (in_array($response->code, array(200))) {
-            return $response->body;
-        } else {
-            throw new MKException($response->raw_body, 'Could not get refunds list. Response ('.$response->code.'): '.$response->raw_body, $response->body->code);
-        }
+        $response = $this->makeApiRequest('/v1/refunds');
+        return $response->body;
     }
 
     /**
      * Get payment methods
      *
-     * @param mixed An object or array containing request parameters
-     * @throws MKException if failed to get payment methods
-     * @return obj An object containing grouped lists of Payment Method objects
+     * @param $request_params An object or array containing request parameters
+     * @return mixed An object containing grouped lists of Payment Method objects
+     * @throws MKResponseException if failed to get payment methods
      */
-    public function getPaymentMethods ($request_params)
+    public function getPaymentMethods($request_params)
     {
-        $response = $this->makeGetRequest('/v1/methods', $request_params);
-
-        if (!in_array($response->code, array(200))) {
-            throw new MKException($response->raw_body, 'Could not get payment methods. Response ('.$response->code.'): '.$response->raw_body, $response->body->code);
-        }
-
+        $response = $this->makeApiRequest(self::GET, '/v1/methods', $request_params);
         return $response->body;
     }
 
    /**
      * Get carrier-specific destinations for shipments (list of Automated Parcel Machines)
      *
-     * @param mixed. An object or array containing request body
-     * @throws MKException if failed to retrieve the listing
-     * @return obj Shop configuration object
+     * @param $request_body An object or array containing request body
+     * @return mixed Shop configuration object
+     * @throws MKResponseException if failed to retrieve the listing
      */
-    public function getDestinations ($request_body)
+    public function getDestinations($request_body)
     {
-        $response = $this->makePostRequest("/v1/shipments/destinations", $request_body);
-
-        if (in_array($response->code, array(200))) {
-            return $response->body;
-        } else {
-            throw new MKException($response->raw_body, 'Could not retrieve destinations list. Response ('.$response->code.'): '.$response->raw_body, $response->body->code);
-        }
+        $response = $this->makeApiRequest(self::POST'/v1/shipments/destinations', NULL, $request_body);
+        return $response->body;
     }
 
     /**
      * Create new shipments at carrier systems
      *
-     * @param mixed An object or array containing request body
-     * @throws MKException if failed to create transaction
-     * @return obj Transaction object
+     * @param $request_body An object or array containing request body
+     * @return mixed Transaction object
+     * @throws MKResponseException if failed to create transaction
      */
-    public function createShipments ($request_body)
+    public function createShipments($request_body)
     {
-        $response = $this->makePostRequest('/v1/shipments', $request_body);
-
-        if (in_array($response->code, array(200, 201))) {
-            return $response->body;
-        } else {
-            throw new MKException($response->raw_body, 'Could not create shipments. Response ('.$response->code.'): '.$response->raw_body, $response->body->code);
-        }
+        $response = $this->makeApiRequest(self::POST, '/v1/shipments', NULL, $request_body);
+        return $response->body;
     }
 
     /**
      * get label formats
      *
-     * @throws MKException if failed to get label formats list
-     * @return array List of label formats
+     * @return mixed List of label formats
+     * @throws MKResponseException if failed to get label formats list
      */
-    public function getLabelFormats ()
+    public function getLabelFormats()
     {
-        $response = $this->makeGetRequest('/v1/shipments/labels/formats');
-
-        if (in_array($response->code, array(200, 201))) {
-            return $response->body;
-        } else {
-            throw new MKException('Could not get parcel label formats. Response ('.$response->code.'): '.$response->raw_body);
-        }
+        $response = $this->makeApiRequest(self::GET, '/v1/shipments/labels/formats');
+        return $response->body;
     }
 
    /**
      * generate parcel labels for shipments registered at carriers
      *
-     * @param mixed An object or array containing request body
-     * @throws MKException if failed to create transaction
-     * @return obj Transaction object
+     * @param $request_body An object or array containing request body
+     * @return mixed Transaction object
+     * @throws MKResponseException if failed to create transaction
      */
-    public function createLabels ($request_body)
+    public function createLabels($request_body)
     {
-        $response = $this->makePostRequest('/v1/shipments/createlabels', $request_body);
-
-        if (in_array($response->code, array(200, 201))) {
-            return $response->body;
-        } else {
-            throw new MKException($response->raw_body, 'Could not generate parcel labels. Response ('.$response->code.'): '.$response->raw_body, $response->body->code);
-        }
+        $response = $this->makeApiRequest(self::POST, '/v1/shipments/createlabels', NULL, $request_body);
+        return $response->body;
     }
 
     /**
      * generate shopping cart for SimpleCheckout
      *
-     * @param mixed An object or array containing request body
-     * @throws MKException if failed to create transaction
-     * @return obj Transaction object
+     * @param $request_body An object or array containing request body
+     * @return mixed ransaction object
+     * @throws MKResponseException if failed to create transaction
      */
-    public function createCart ($request_body)
+    public function createCart($request_body)
     {
-        $response = $this->makePostRequest('/v1/carts', $request_body);
-
-        if (in_array($response->code, array(200, 201))) {
-            return $response->body;
-        } else {
-            throw new MKException($response->raw_body, 'Could not generate cart. Response ('.$response->code.'): '.$response->raw_body, $response->body->code);
-        }
+        $response = $this->makeApiRequest(self::POST, '/v1/carts', NULL, $request_body);
+        return $response->body;
     }
 }
