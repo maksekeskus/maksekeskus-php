@@ -836,6 +836,9 @@ class Maksekeskus
 
     /**
      * Get a list of a transaction's refunds
+     * 
+     * This function does not work as the name suggests (same as getRefunds), leaving it here for backwards compatibility
+     * New function intended functionality is called getShopRefunds
      *
      * @param string $transaction_id Transaction ID
      * @throws MKException if failed to get refunds list
@@ -843,31 +846,46 @@ class Maksekeskus
      */
     public function getTransactionRefunds ($transaction_id)
     {
-        $response = $this->makeGetRequest("/v1/refunds");
-
-        if (in_array($response->code, array(200))) {
-            return $response->body;
-        } else {
-            throw new MKException($response->raw_body, 'Could not get transaction refunds list. Response ('.$response->code.'): '.$response->raw_body, $response->body->code);
-        }
+        return $this->getShopRefunds();
     }
 
-
     /**
-     * Get a list of refunds
-     *
-     * @throws MKException if failed to get refunds list
+     * Returns list of refunds for shop
+     * 
+     * Possible parameters (none are required):
+     * (string)since, yyyy-MM-ddZ, ex. 2014-01-01+02:00 (zone is optional)
+     * (string)until, yyyy-MM-ddZ, ex. 2014-01-01+02:00 (zone is optional)
+     * (string)status, possible values: CREATED, SENT, SETTLED, FAILED
+     * (string)page, page number
+     * (string)per_page, number of items per page
+     * 
+     * @param mixed An object or array containing request parameters
+     * @throws MKException if failed to get payment methods
      * @return array Refund objects
      */
-    public function getRefunds ()
+    public function getShopRefunds($request_params = null)
     {
-        $response = $this->makeGetRequest("/v1/refunds");
+        $response = $this->makeGetRequest("/v1/refunds", $request_params);
 
         if (in_array($response->code, array(200))) {
             return $response->body;
         } else {
             throw new MKException($response->raw_body, 'Could not get refunds list. Response ('.$response->code.'): '.$response->raw_body, $response->body->code);
         }
+    }
+
+
+    /**
+     * Get a list of refunds
+     * 
+     * Use getShopRefunds instead, leaving this here for backwards compatibility
+     *
+     * @throws MKException if failed to get refunds list
+     * @return array Refund objects
+     */
+    public function getRefunds ()
+    {
+        return $this->getShopRefunds();
     }
 
 
