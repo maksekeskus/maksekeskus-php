@@ -1017,7 +1017,7 @@ class Maksekeskus
     {
         $response = $this->makeGetRequest("/v1/shop/fees", $request_params);
 
-        if (in_array($response->code, array(200, 201))) {
+        if (in_array($response->code, array(200))) {
             return $response->body;
         } else {
             throw new MKException($response->raw_body, 'Could not get shop fees. Response ('.$response->code.'): '.$response->raw_body, $response->body->code);
@@ -1042,7 +1042,7 @@ class Maksekeskus
     {
         $response = $this->makeGetRequest("/v1/shop/accountstatements", $request_params);
 
-        if (in_array($response->code, array(200, 201))) {
+        if (in_array($response->code, array(200))) {
             return $response->body;
         } else {
             throw new MKException($response->raw_body, 'Could not get account statements. Response ('.$response->code.'): '.$response->raw_body, $response->body->code);
