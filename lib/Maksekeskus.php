@@ -1000,6 +1000,53 @@ class Maksekeskus
         }
     }
 
-    
+    /**
+     * Get Shop fees records (Maksekeskus Service fees)
+     *
+     * Possible parameters (none are required):
+     * (string)since, yyyy-MM-ddZ, ex. 2014-01-01+02:00 (zone is optional)
+     * (string)until, yyyy-MM-ddZ, ex. 2014-01-01+02:00 (zone is optional)
+     * (string)page, page number
+     * (string)per_page, number of items per page
+     * 
+     * @param mixed An object or array containing request parameters
+     * @throws MKException if failed to get payment methods
+     * @return obj An object containing grouped lists of Payment Method objects
+     */
+    public function getShopFees($request_params = null)
+    {
+        $response = $this->makeGetRequest("/v1/shop/fees", $request_params);
+
+        if (in_array($response->code, array(200, 201))) {
+            return $response->body;
+        } else {
+            throw new MKException($response->raw_body, 'Could not get shop fees. Response ('.$response->code.'): '.$response->raw_body, $response->body->code);
+        }
+    }
+
+    /**
+     * Get Shop Account Statement records (income, fees, vat, payouts)
+     *
+     * Possible parameters (none are required):
+     * (string)since, yyyy-MM-ddZ, ex. 2014-01-01+02:00 (zone is optional)
+     * (string)until, yyyy-MM-ddZ, ex. 2014-01-01+02:00 (zone is optional)
+     * (string)payout_id, id of the payout
+     * (string)page, page number
+     * (string)per_page, number of items per page
+     * 
+     * @param mixed An object or array containing request parameters
+     * @throws MKException if failed to get payment methods
+     * @return obj An object containing grouped lists of Payment Method objects
+     */
+    public function getAccountStatement($request_params = null)
+    {
+        $response = $this->makeGetRequest("/v1/shop/accountstatements", $request_params);
+
+        if (in_array($response->code, array(200, 201))) {
+            return $response->body;
+        } else {
+            throw new MKException($response->raw_body, 'Could not get account statements. Response ('.$response->code.'): '.$response->raw_body, $response->body->code);
+        }
+    }
 }
 
