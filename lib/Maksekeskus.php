@@ -62,7 +62,7 @@ class Maksekeskus
     /**
      * @var string library Version
      */
-    private $version = "1.4.3";
+    private $version = "1.4.5";
 
     /**
      * Response object of the last API request
