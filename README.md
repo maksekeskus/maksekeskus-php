@@ -1,3 +1,8 @@
+# DEPRECATED
+This SDK is no longer maintained. Development has moved to a new, active repository.
+
+**Please use the new SDK for all projects:** [makecommerce-php-sdk](https://github.com/maksekeskus/makecommerce-php-sdk)
+
 maksekeskus-php
 ===============
 
