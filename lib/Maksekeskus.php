@@ -597,6 +597,27 @@ class Maksekeskus
 
 
     /**
+     * Safely extract error code from response
+     *
+     * Returns $response->body->code if available (when body is JSON),
+     * otherwise returns negated HTTP response code to differentiate from API error codes
+     *
+     * @param obj $response Response object
+     * @return int Error code
+     */
+    protected function getErrorCode ($response)
+    {
+        // Check if body is an object with a code property
+        if (is_object($response->body) && isset($response->body->code)) {
+            return $response->body->code;
+        }
+
+        // Fall back to negated HTTP response code
+        return -((int) $response->code);
+    }
+
+
+    /**
      * Get shop data
      *
      * @throws MKException if failed to get shop data
@@ -609,7 +630,7 @@ class Maksekeskus
         if (in_array($response->code, array(200))) {
             return $response->body;
         } else {
-            throw new MKException($response->raw_body, 'Could not get shop data. Response ('.$response->code.'): '.$response->raw_body, $response->body->code);
+            throw new MKException($response->raw_body, 'Could not get shop data. Response ('.$response->code.'): '.$response->raw_body, $this->getErrorCode($response));
         }
     }
 
@@ -627,7 +648,7 @@ class Maksekeskus
         if (in_array($response->code, array(200))) {
             return $response->body;
         } else {
-            throw new MKException($response->raw_body, 'Could not get shop configuration for the environment. Response ('.$response->code.'): '.$response->raw_body, $response->body->code);
+            throw new MKException($response->raw_body, 'Could not get shop configuration for the environment. Response ('.$response->code.'): '.$response->raw_body, $this->getErrorCode($response));
         }
     }
 
@@ -647,7 +668,7 @@ class Maksekeskus
         if (in_array($response->code, array(200))) {
             return $response->body;
         } else {
-            throw new MKException($response->raw_body, 'Could not get shop data. Response ('.$response->code.'): '.$response->raw_body, $response->body->code);
+            throw new MKException($response->raw_body, 'Could not get shop data. Response ('.$response->code.'): '.$response->raw_body, $this->getErrorCode($response));
         }
     }
 
@@ -666,7 +687,7 @@ class Maksekeskus
         if (in_array($response->code, array(200, 201))) {
             return $response->body;
         } else {
-            throw new MKException($response->raw_body, 'Could not create transaction. Response ('.$response->code.'): '.$response->raw_body, $response->body->code);
+            throw new MKException($response->raw_body, 'Could not create transaction. Response ('.$response->code.'): '.$response->raw_body, $this->getErrorCode($response));
         }
     }
 
@@ -684,7 +705,7 @@ class Maksekeskus
         $response = $this->makePostRequest("/v1/transactions/{$transaction_id}/addMeta", $params);
 
         if (!in_array($response->code, array(200, 201))) {
-            throw new MKException($response->raw_body, 'Could not create payment. Response ('.$response->code.'): '.$response->raw_body, $response->body->code);
+            throw new MKException($response->raw_body, 'Could not create payment. Response ('.$response->code.'): '.$response->raw_body, $this->getErrorCode($response));
         }
 
         return $response->body;
@@ -705,7 +726,7 @@ class Maksekeskus
         if (in_array($response->code, array(200))) {
             return $response->body;
         } else {
-            throw new MKException($response->raw_body, 'Could not get transaction. Response ('.$response->code.'): '.$response->raw_body, $response->body->code);
+            throw new MKException($response->raw_body, 'Could not get transaction. Response ('.$response->code.'): '.$response->raw_body, $this->getErrorCode($response));
         }
     }
 
@@ -723,7 +744,7 @@ class Maksekeskus
         if (in_array($response->code, array(200))) {
             return $response->body;
         } else {
-            throw new MKException($response->raw_body, 'Could not get transaction statement. Response ('.$response->code.'): '.$response->raw_body, $response->body->code);
+            throw new MKException($response->raw_body, 'Could not get transaction statement. Response ('.$response->code.'): '.$response->raw_body, $this->getErrorCode($response));
         }
     }
 
@@ -783,7 +804,7 @@ class Maksekeskus
         $response = $this->makePostRequest('/v1/tokens', $request_body);
 
         if (!in_array($response->code, array(200, 201))) {
-            throw new MKException($response->raw_body, 'Could not create payment token. Response ('.$response->code.'): '.$response->raw_body, $response->body->code);
+            throw new MKException($response->raw_body, 'Could not create payment token. Response ('.$response->code.'): '.$response->raw_body, $this->getErrorCode($response));
         }
 
         return $response->body;
@@ -796,7 +817,7 @@ class Maksekeskus
         $response = $this->makePostRequest("/v1/transactions/{$transaction_id}/payments", $request_body);
 
         if (!in_array($response->code, array(200, 201))) {
-            throw new MKException($response->raw_body, 'Could not create payment. Response ('.$response->code.'): '.$response->raw_body, $response->body->code);
+            throw new MKException($response->raw_body, 'Could not create payment. Response ('.$response->code.'): '.$response->raw_body, $this->getErrorCode($response));
         }
 
         return $response->body;
@@ -808,7 +829,7 @@ class Maksekeskus
         $response = $this->makePostRequest("/v1/transactions/{$transaction_id}/refunds", $request_body);
 
         if (!in_array($response->code, array(200, 201))) {
-            throw new MKException($response->raw_body, 'Could not create refund. Response ('.$response->code.'): '.$response->raw_body, $response->body->code);
+            throw new MKException($response->raw_body, 'Could not create refund. Response ('.$response->code.'): '.$response->raw_body, $this->getErrorCode($response));
         }
 
         return $response->body;
@@ -829,7 +850,7 @@ class Maksekeskus
         if (in_array($response->code, array(200))) {
             return $response->body;
         } else {
-            throw new MKException($response->raw_body, 'Could not get refund. Response ('.$response->code.'): '.$response->raw_body, $response->body->code);
+            throw new MKException($response->raw_body, 'Could not get refund. Response ('.$response->code.'): '.$response->raw_body, $this->getErrorCode($response));
         }
     }
 
@@ -870,7 +891,7 @@ class Maksekeskus
         if (in_array($response->code, array(200))) {
             return $response->body;
         } else {
-            throw new MKException($response->raw_body, 'Could not get refunds list. Response ('.$response->code.'): '.$response->raw_body, $response->body->code);
+            throw new MKException($response->raw_body, 'Could not get refunds list. Response ('.$response->code.'): '.$response->raw_body, $this->getErrorCode($response));
         }
     }
 
@@ -901,7 +922,7 @@ class Maksekeskus
         $response = $this->makeGetRequest('/v1/methods', $request_params);
 
         if (!in_array($response->code, array(200))) {
-            throw new MKException($response->raw_body, 'Could not get payment methods. Response ('.$response->code.'): '.$response->raw_body, $response->body->code);
+            throw new MKException($response->raw_body, 'Could not get payment methods. Response ('.$response->code.'): '.$response->raw_body, $this->getErrorCode($response));
         }
 
         return $response->body;
@@ -922,7 +943,7 @@ class Maksekeskus
         if (in_array($response->code, array(200))) {
             return $response->body;
         } else {
-            throw new MKException($response->raw_body, 'Could not retrieve destinations list. Response ('.$response->code.'): '.$response->raw_body, $response->body->code);
+            throw new MKException($response->raw_body, 'Could not retrieve destinations list. Response ('.$response->code.'): '.$response->raw_body, $this->getErrorCode($response));
         }
     }
 
@@ -943,7 +964,7 @@ class Maksekeskus
         if (in_array($response->code, array(200, 201))) {
             return $response->body;
         } else {
-            throw new MKException($response->raw_body, 'Could not create shipments. Response ('.$response->code.'): '.$response->raw_body, $response->body->code);
+            throw new MKException($response->raw_body, 'Could not create shipments. Response ('.$response->code.'): '.$response->raw_body, $this->getErrorCode($response));
         }
     }
 
@@ -978,7 +999,7 @@ class Maksekeskus
         if (in_array($response->code, array(200, 201))) {
             return $response->body;
         } else {
-            throw new MKException($response->raw_body, 'Could not generate parcel labels. Response ('.$response->code.'): '.$response->raw_body, $response->body->code);
+            throw new MKException($response->raw_body, 'Could not generate parcel labels. Response ('.$response->code.'): '.$response->raw_body, $this->getErrorCode($response));
         }
     }
 
@@ -996,7 +1017,7 @@ class Maksekeskus
         if (in_array($response->code, array(200, 201))) {
             return $response->body;
         } else {
-            throw new MKException($response->raw_body, 'Could not generate cart. Response ('.$response->code.'): '.$response->raw_body, $response->body->code);
+            throw new MKException($response->raw_body, 'Could not generate cart. Response ('.$response->code.'): '.$response->raw_body, $this->getErrorCode($response));
         }
     }
 
@@ -1020,7 +1041,7 @@ class Maksekeskus
         if (in_array($response->code, array(200))) {
             return $response->body;
         } else {
-            throw new MKException($response->raw_body, 'Could not get shop fees. Response ('.$response->code.'): '.$response->raw_body, $response->body->code);
+            throw new MKException($response->raw_body, 'Could not get shop fees. Response ('.$response->code.'): '.$response->raw_body, $this->getErrorCode($response));
         }
     }
 
@@ -1045,7 +1066,7 @@ class Maksekeskus
         if (in_array($response->code, array(200))) {
             return $response->body;
         } else {
-            throw new MKException($response->raw_body, 'Could not get account statements. Response ('.$response->code.'): '.$response->raw_body, $response->body->code);
+            throw new MKException($response->raw_body, 'Could not get account statements. Response ('.$response->code.'): '.$response->raw_body, $this->getErrorCode($response));
         }
     }
 }
